@@ -1,0 +1,33 @@
+name: Bug report
+description: Something doesn't work as it should
+labels: [bug]
+body:
+  - type: textarea
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Device
+      placeholder: e.g. Fire TV Stick 4K Max (2nd gen), Chromecast with Google TV
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Nimbus version
+      description: Settings shows it at the bottom.
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Playlist type
+      options: [Xtream Codes, M3U, Both]
+  - type: textarea
+    attributes:
+      label: Logs
+      description: |
+        If you can, `adb logcat -d | grep -i nimbus` around the time it happened.
+        Remove any server addresses, usernames or passwords first.
+      render: text

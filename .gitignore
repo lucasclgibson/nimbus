@@ -1,0 +1,14 @@
+.gradle/
+build/
+local.properties
+*.apk
+.idea/
+*.iml
+.kotlin/
+tools/mock-xtream/cache/
+hub-data/
+# Machine-specific settings and secrets (see tools/local.env.example)
+tools/local.env
+*.jks
+*.keystore
+signing.properties

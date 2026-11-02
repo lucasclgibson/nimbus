@@ -1,0 +1,391 @@
+"""
+Generate the Nimbus brand assets from one definition of the mark – a cloud ("nimbus") with a play
+button cut out of it – and the Inter wordmark:
+
+  res/drawable/nimbus_mark.xml          the mark as a vector (in-app logo, any size)
+  res/drawable-*/banner.png             TV launcher banner and Fire TV home screen tile (16:9)
+  res/mipmap-*/ic_launcher.png          launcher icon (+ adaptive icon layers)
+  res/drawable-xhdpi/splash_logo.png    launch screen lockup
+  docs/images/header.png                README header
+  docs/images/social-preview.png        GitHub social preview (1280x640)
+
+  python3 -I tools/make_brand.py app/src/main/res/font app/src/main/res [preview.png]
+"""
+import math
+import os
+import sys
+
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
+
+FONTS, RES = sys.argv[1], sys.argv[2]
+PREVIEW = sys.argv[3] if len(sys.argv) > 3 else None
+
+# ---------------------------------------------------------------------------------------------- the mark
+# Design units. Three lobes sitting on a flat base (the outer lobes touch it), play triangle cut out.
+C1 = (30.0, 58.0, 18.0)  # left lobe   (x, y, r)
+C2 = (51.0, 43.0, 24.5)  # top lobe
+C3 = (72.0, 58.0, 18.0)  # right lobe
+BASE = 76.0  # C1 and C3 are tangent to it
+TRIANGLE = [(45.0, 48.5), (63.5, 59.25), (45.0, 70.0)]  # clockwise: top-left, right, bottom-left
+TRIANGLE_RADIUS = 2.8
+LEFT, TOP, RIGHT = C1[0] - C1[2], C2[1] - C2[2], C3[0] + C3[2]
+WIDTH, HEIGHT = RIGHT - LEFT, BASE - TOP
+# Sky gradient across the mark, top-left to bottom-right.
+STOPS = [(0.0, (160, 226, 255)), (0.48, (72, 160, 255)), (1.0, (128, 96, 255))]
+GRAD_FROM, GRAD_TO = (LEFT + 4, TOP + 2), (RIGHT - 4, BASE)
+
+BG_TOP, BG_BOTTOM = (13, 31, 82), (3, 7, 20)
+BLUE, VIOLET = (46, 139, 255), (122, 92, 255)
+
+
+def upper_intersection(a, b):
+    (x1, y1, r1), (x2, y2, r2) = a, b
+    d = math.hypot(x2 - x1, y2 - y1)
+    k = (r1 * r1 - r2 * r2 + d * d) / (2 * d)
+    h = math.sqrt(r1 * r1 - k * k)
+    mx, my = x1 + k * (x2 - x1) / d, y1 + k * (y2 - y1) / d
+    p = (mx + h * (y2 - y1) / d, my - h * (x2 - x1) / d)
+    q = (mx - h * (y2 - y1) / d, my + h * (x2 - x1) / d)
+    return p if p[1] < q[1] else q
+
+
+P12, P23 = upper_intersection(C1, C2), upper_intersection(C2, C3)
+B1, B3 = (C1[0], BASE), (C3[0], BASE)
+
+
+def sweep(c, a, b):
+    """Clockwise (on screen) angles from a to b around circle c."""
+    t0 = math.atan2(a[1] - c[1], a[0] - c[0])
+    t1 = math.atan2(b[1] - c[1], b[0] - c[0])
+    while t1 <= t0:
+        t1 += 2 * math.pi
+    return t0, t1
+
+
+def arc_points(c, a, b, n=96):
+    t0, t1 = sweep(c, a, b)
+    return [(c[0] + c[2] * math.cos(t0 + (t1 - t0) * i / n), c[1] + c[2] * math.sin(t0 + (t1 - t0) * i / n)) for i in range(n + 1)]
+
+
+def rounded_corners(poly, r):
+    """For each corner: (tangent point in, tangent point out, centre of the rounding)."""
+    out = []
+    n = len(poly)
+    for i in range(n):
+        p, v, q = poly[i - 1], poly[i], poly[(i + 1) % n]
+        u1 = ((p[0] - v[0]), (p[1] - v[1]))
+        u2 = ((q[0] - v[0]), (q[1] - v[1]))
+        l1, l2 = math.hypot(*u1), math.hypot(*u2)
+        u1, u2 = (u1[0] / l1, u1[1] / l1), (u2[0] / l2, u2[1] / l2)
+        theta = math.acos(u1[0] * u2[0] + u1[1] * u2[1])
+        t = r / math.tan(theta / 2)
+        a = (v[0] + u1[0] * t, v[1] + u1[1] * t)
+        b = (v[0] + u2[0] * t, v[1] + u2[1] * t)
+        bis = (u1[0] + u2[0], u1[1] + u2[1])
+        bl = math.hypot(*bis)
+        dist = r / math.sin(theta / 2)
+        centre = (v[0] + bis[0] / bl * dist, v[1] + bis[1] / bl * dist)
+        out.append((a, b, centre))
+    return out
+
+
+def cloud_outline():
+    return arc_points(C1, B1, P12) + arc_points(C2, P12, P23)[1:] + arc_points(C3, P23, B3)[1:]
+
+
+def triangle_outline():
+    pts = []
+    for a, b, c in rounded_corners(TRIANGLE, TRIANGLE_RADIUS):
+        pts += arc_points((c[0], c[1], TRIANGLE_RADIUS), a, b, 24)
+    return pts
+
+
+# ---------------------------------------------------------------------------------------------- vector
+
+def fmt(v):
+    return f"{v:.3f}".rstrip("0").rstrip(".")
+
+
+def pt(p):
+    return f"{fmt(p[0] - LEFT)},{fmt(p[1] - TOP)}"
+
+
+def arc_cmd(c, a, b):
+    t0, t1 = sweep(c, a, b)
+    large = 1 if t1 - t0 > math.pi else 0
+    return f"A{fmt(c[2])},{fmt(c[2])} 0 {large} 1 {pt(b)}"
+
+
+def vector_xml():
+    cloud = f"M{pt(B1)} {arc_cmd(C1, B1, P12)} {arc_cmd(C2, P12, P23)} {arc_cmd(C3, P23, B3)} Z"
+    corners = rounded_corners(TRIANGLE, TRIANGLE_RADIUS)
+    tri = f"M{pt(corners[0][1])}"
+    for i in range(1, len(corners) + 1):
+        a, b, c = corners[i % len(corners)]
+        tri += f" L{pt(a)} {arc_cmd((c[0], c[1], TRIANGLE_RADIUS), a, b)}"
+    tri += " Z"
+    items = "\n".join(
+        f'                    <item android:offset="{o}" android:color="#FF{r:02X}{g:02X}{b:02X}" />' for o, (r, g, b) in STOPS
+    )
+    return f"""<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated by tools/make_brand.py: the Nimbus mark (a cloud with a play button cut out). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="{fmt(WIDTH / 2)}dp"
+    android:height="{fmt(HEIGHT / 2)}dp"
+    android:viewportWidth="{fmt(WIDTH)}"
+    android:viewportHeight="{fmt(HEIGHT)}">
+    <path
+        android:fillType="evenOdd"
+        android:pathData="{cloud} {tri}">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="{fmt(GRAD_FROM[0] - LEFT)}"
+                android:startY="{fmt(GRAD_FROM[1] - TOP)}"
+                android:endX="{fmt(GRAD_TO[0] - LEFT)}"
+                android:endY="{fmt(GRAD_TO[1] - TOP)}">
+{items}
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>
+"""
+
+
+# ---------------------------------------------------------------------------------------------- raster
+
+SS = 4  # supersampling
+
+
+def lerp(a, b, t):
+    return tuple(int(round(a[i] + (b[i] - a[i]) * t)) for i in range(3))
+
+
+def stops_colour(t):
+    t = min(1.0, max(0.0, t))
+    for (o0, c0), (o1, c1) in zip(STOPS, STOPS[1:]):
+        if t <= o1:
+            return lerp(c0, c1, (t - o0) / (o1 - o0))
+    return STOPS[-1][1]
+
+
+def mark_image(height):
+    """The mark, `height` px tall, transparent background."""
+    s = height * SS / HEIGHT
+    w, h = int(math.ceil(WIDTH * s)), int(math.ceil(HEIGHT * s))
+    tf = lambda pts: [((x - LEFT) * s, (y - TOP) * s) for x, y in pts]
+    mask = Image.new("L", (w, h), 0)
+    d = ImageDraw.Draw(mask)
+    d.polygon(tf(cloud_outline()), fill=255)
+    d.polygon(tf(triangle_outline()), fill=0)
+    # Gradient along GRAD_FROM -> GRAD_TO.
+    gx, gy = (GRAD_TO[0] - GRAD_FROM[0]), (GRAD_TO[1] - GRAD_FROM[1])
+    glen2 = gx * gx + gy * gy
+    small = Image.new("RGB", (max(2, w // 8), max(2, h // 8)))
+    px = small.load()
+    for y in range(small.height):
+        for x in range(small.width):
+            ux = LEFT + (x + 0.5) * 8 / s
+            uy = TOP + (y + 0.5) * 8 / s
+            t = ((ux - GRAD_FROM[0]) * gx + (uy - GRAD_FROM[1]) * gy) / glen2
+            px[x, y] = stops_colour(t)
+    fill = small.resize((w, h), Image.BICUBIC).convert("RGBA")
+    fill.putalpha(mask)
+    return downsample(fill)
+
+
+def word_image(cap_height, colour=(255, 255, 255), tracking=-0.015):
+    """'nimbus' in Inter ExtraBold whose ascender ('b') is `cap_height` px tall."""
+    font_size = int(cap_height * SS / 0.74)
+    font = ImageFont.truetype(os.path.join(FONTS, "inter_extrabold.ttf"), font_size)
+    text = "nimbus"
+    advance = [font.getlength(ch) for ch in text]
+    track = tracking * font_size
+    width = int(sum(advance) + track * (len(text) - 1)) + font_size // 4
+    l, t, r, b = font.getbbox(text)
+    img = Image.new("L", (width, b - t + font_size // 8), 0)
+    d = ImageDraw.Draw(img)
+    x = -l
+    for ch, adv in zip(text, advance):
+        d.text((x, -t), ch, font=font, fill=255)
+        x += adv + track
+    img = img.crop(img.getbbox())
+    # A whisper of sheen: white to a cool white down the letters.
+    shade = Image.new("RGB", img.size)
+    sp = shade.load()
+    for y in range(img.height):
+        c = lerp(colour, (214, 226, 255), y / max(1, img.height - 1) * 0.9)
+        for x in range(img.width):
+            sp[x, y] = c
+    out = shade.convert("RGBA")
+    out.putalpha(img)
+    return downsample(out)
+
+
+def downsample(img, factor=SS):
+    """Exact box-filter reduction with premultiplied alpha: clean edges, no dark fringes or ringing."""
+    w, h = max(1, img.width // factor), max(1, img.height // factor)
+    r, g, b, a = img.crop((0, 0, w * factor, h * factor)).split()
+    small = Image.merge("RGBA", [ImageChops.multiply(c, a) for c in (r, g, b)] + [a]).resize((w, h), Image.BOX)
+    *rgb, a = small.split()
+    alpha = a.tobytes()
+
+    def unpremultiply(c):
+        data = c.tobytes()
+        return Image.frombytes("L", (w, h), bytes(min(255, v * 255 // alpha[i]) if alpha[i] else 0 for i, v in enumerate(data)))
+
+    return Image.merge("RGBA", [unpremultiply(c) for c in rgb] + [a])
+
+
+def glow(size, centre, radius, colour, alpha):
+    layer = Image.new("RGBA", size, (0, 0, 0, 0))
+    ImageDraw.Draw(layer).ellipse(
+        [centre[0] - radius, centre[1] - radius, centre[0] + radius, centre[1] + radius], fill=colour + (alpha,)
+    )
+    return layer.filter(ImageFilter.GaussianBlur(radius * 0.55))
+
+
+def backdrop(w, h):
+    bg = Image.new("RGB", (w, h))
+    px = bg.load()
+    for y in range(h):
+        for x in range(w):
+            t = (y / h) * 0.75 + (x / w) * 0.25
+            px[x, y] = lerp(BG_TOP, BG_BOTTOM, t)
+    bg = bg.convert("RGBA")
+    bg.alpha_composite(glow((w, h), (w * 0.86, h * 0.02), h * 0.75, BLUE, 110))
+    bg.alpha_composite(glow((w, h), (w * 0.08, h * 1.05), h * 0.65, VIOLET, 80))
+    return bg
+
+
+def halo(img, colour=BLUE, alpha=120, spread=0.18):
+    """A soft glow in the mark's shape, to sit behind it."""
+    pad = int(img.height * spread * 2)
+    a = img.getchannel("A")
+    canvas = Image.new("L", (img.width + 2 * pad, img.height + 2 * pad), 0)
+    canvas.paste(a, (pad, pad))
+    blurred = canvas.filter(ImageFilter.GaussianBlur(img.height * spread))
+    out = Image.new("RGBA", canvas.size, colour + (0,))
+    out.putalpha(blurred.point(lambda v: v * alpha // 255))
+    return out, pad
+
+
+def lockup(mark_h, gap_ratio=0.30, word_ratio=0.80, glow_alpha=110):
+    """Mark + wordmark side by side (transparent), with the mark's halo."""
+    mark = mark_image(mark_h)
+    word = word_image(int(mark_h * word_ratio))
+    gap = int(mark_h * gap_ratio)
+    hal, pad = halo(mark, alpha=glow_alpha)
+    w = pad + mark.width + gap + word.width + pad
+    h = max(mark.height, word.height) + 2 * pad
+    out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    out.alpha_composite(hal, (0, (h - hal.height) // 2))
+    my = (h - mark.height) // 2
+    out.alpha_composite(mark, (pad, my))
+    # Wordmark: sit its baseline on the cloud's base, nudged up a touch to look centred.
+    wy = my + mark.height - word.height - int(mark_h * 0.04)
+    out.alpha_composite(word, (pad + mark.width + gap, wy))
+    return out, pad
+
+
+def save(img, path):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    img.save(path)
+
+
+# ---------------------------------------------------------------------------------------------- outputs
+
+def build():
+    with open(os.path.join(RES, "drawable", "nimbus_mark.xml"), "w") as f:
+        f.write(vector_xml())
+
+    # Fire TV home screen tile: 320x180 (xhdpi), drawn at 4x for clean edges.
+    bw, bh = 1280, 720
+    banner = backdrop(bw, bh)
+    lk, pad = lockup(int(bh * 0.30))
+    max_w = int(bw * 0.80)
+    if lk.width - 2 * pad > max_w:
+        k = max_w / (lk.width - 2 * pad)
+        lk = lk.resize((int(lk.width * k), int(lk.height * k)), Image.LANCZOS)
+        pad = int(pad * k)
+    banner.alpha_composite(lk, ((bw - lk.width) // 2, (bh - lk.height) // 2 + int(bh * 0.01)))
+    # Also the Fire TV home screen tile: Fire TV ignores android:banner for apps installed outside the
+    # Appstore and fits the launcher entry's icon into a 16:9 tile, so the TV launcher entry uses this as
+    # its icon. Launchers load icons above the screen's density, hence the larger copies.
+    for folder, size in (("drawable-xhdpi", (320, 180)), ("drawable-xxhdpi", (480, 270)), ("drawable-xxxhdpi", (640, 360))):
+        save(banner.convert("RGB").resize(size, Image.BOX), os.path.join(RES, folder, "banner.png"))
+
+    # Launcher icon (legacy): rounded square, mark centred.
+    S = 768
+    tile = backdrop(S, S)
+    mark = mark_image(int(S * 0.44))
+    hal, hp = halo(mark, alpha=130)
+    cx, cy = (S - mark.width) // 2, (S - mark.height) // 2 + int(S * 0.02)
+    tile.alpha_composite(hal, (cx - hp, cy - hp))
+    tile.alpha_composite(mark, (cx, cy))
+    m = Image.new("L", (S, S), 0)
+    ImageDraw.Draw(m).rounded_rectangle([0, 0, S - 1, S - 1], radius=int(S * 0.22), fill=255)
+    icon = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+    icon.paste(tile, (0, 0), m)
+    for folder, size in (("mipmap-mdpi", 48), ("mipmap-hdpi", 72), ("mipmap-xhdpi", 96), ("mipmap-xxhdpi", 144), ("mipmap-xxxhdpi", 192)):
+        save(icon.resize((size, size), Image.LANCZOS), os.path.join(RES, folder, "ic_launcher.png"))
+
+    # Adaptive icon (Android 8+): full-bleed backdrop + the mark inside the 66dp safe zone of 108dp.
+    A = 1296
+    back = backdrop(A, A).convert("RGB")
+    fore = Image.new("RGBA", (A, A), (0, 0, 0, 0))
+    mark = mark_image(int(A * 0.30))
+    hal, hp = halo(mark, alpha=130)
+    cx, cy = (A - mark.width) // 2, (A - mark.height) // 2 + int(A * 0.012)
+    fore.alpha_composite(hal, (cx - hp, cy - hp))
+    fore.alpha_composite(mark, (cx, cy))
+    for folder, size in (("mipmap-mdpi", 108), ("mipmap-hdpi", 162), ("mipmap-xhdpi", 216), ("mipmap-xxhdpi", 324), ("mipmap-xxxhdpi", 432)):
+        save(back.resize((size, size), Image.LANCZOS), os.path.join(RES, folder, "ic_launcher_background.png"))
+        save(fore.resize((size, size), Image.LANCZOS), os.path.join(RES, folder, "ic_launcher_foreground.png"))
+    os.makedirs(os.path.join(RES, "mipmap-anydpi-v26"), exist_ok=True)
+    with open(os.path.join(RES, "mipmap-anydpi-v26", "ic_launcher.xml"), "w") as f:
+        f.write("""<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@mipmap/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+</adaptive-icon>
+""")
+
+    # Launch screen: the lockup, about 300dp wide at xhdpi.
+    sp, _ = lockup(110, glow_alpha=120)
+    save(sp, os.path.join(RES, "drawable-xhdpi", "splash_logo.png"))
+
+    # Docs: README header and the GitHub social preview.
+    docs = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "docs", "images")
+    for name, (w, h), mark_h, tagline in (("header.png", (1600, 400), 150, None),
+                                         ("social-preview.png", (1280, 640), 170, "Open-source IPTV for Android TV and Fire TV")):
+        img = backdrop(w, h)
+        lk, _ = lockup(mark_h)
+        y = (h - lk.height) // 2 - (40 if tagline else 0)
+        img.alpha_composite(lk, ((w - lk.width) // 2, y))
+        if tagline:
+            font = ImageFont.truetype(os.path.join(FONTS, "inter_medium.ttf"), 44)
+            d = ImageDraw.Draw(img)
+            tw = d.textlength(tagline, font=font)
+            d.text(((w - tw) / 2, y + lk.height - 10), tagline, font=font, fill=(184, 195, 218, 255))
+        save(img.convert("RGB"), os.path.join(docs, name))
+
+    if PREVIEW:
+        sheet = Image.new("RGBA", (1500, 900), (34, 36, 40, 255))
+        big = Image.open(os.path.join(RES, "drawable-xhdpi", "banner.png")).convert("RGBA")
+        sheet.alpha_composite(big.resize((960, 540), Image.LANCZOS), (30, 30))
+        sheet.alpha_composite(big, (30, 600))
+        ic = Image.open(os.path.join(RES, "mipmap-xxxhdpi", "ic_launcher.png")).convert("RGBA")
+        sheet.alpha_composite(ic, (1020, 30))
+        sheet.alpha_composite(Image.open(os.path.join(RES, "mipmap-xhdpi", "ic_launcher.png")).convert("RGBA"), (1240, 30))
+        sp_bg = backdrop(sp.width + 60, sp.height + 60)
+        sp_bg.alpha_composite(sp, (30, 30))
+        sheet.alpha_composite(sp_bg, (1020, 260))
+        sheet.alpha_composite(backdrop(320, 180), (380, 600))
+        sheet.alpha_composite(mark_image(120), (420, 630))
+        sheet.convert("RGB").save(PREVIEW)
+
+
+build()
+print("ok")
