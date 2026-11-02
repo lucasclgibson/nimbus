@@ -104,15 +104,15 @@ ksp {
 }
 
 dependencies {
-    val composeBom = platform("androidx.compose:compose-bom:2025.05.01")
+    val composeBom = platform("androidx.compose:compose-bom:2026.09.00")
     implementation(composeBom)
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.material:material-icons-extended")
-    implementation("androidx.tv:tv-material:1.0.1")
+    implementation("androidx.tv:tv-material:1.1.0")
     implementation("androidx.activity:activity-compose:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.0")
-    implementation("androidx.core:core-ktx:1.16.0")
+    implementation("androidx.core:core-ktx:1.19.1")
     implementation("androidx.profileinstaller:profileinstaller:1.4.1")
 
     val media3 = "1.6.1"
@@ -123,7 +123,7 @@ dependencies {
     // FFmpeg audio decoders (AC3/E-AC3/DTS/TrueHD/MP2...) so odd IPTV audio never plays silent.
     implementation("org.jellyfin.media3:media3-ffmpeg-decoder:$media3+1")
 
-    val room = "2.7.1"
+    val room = "2.8.5"
     implementation("androidx.room:room-runtime:$room")
     implementation("androidx.room:room-ktx:$room")
     ksp("androidx.room:room-compiler:$room")
