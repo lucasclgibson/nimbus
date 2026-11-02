@@ -1,0 +1,905 @@
+{
+ "about": "Real films and serials the mock panel can show with their real artwork: open movies (Creative Commons) and public-domain classics. Facts from TMDB, synopses written for Nimbus, artwork and video from Wikimedia Commons (see fetch_art.py). Listed newest-added first.",
+ "films": [
+  {
+   "key": "spring",
+   "title": "Spring",
+   "year": 2019,
+   "released": "2019-04-04",
+   "genre": "Fantasy, Animation, Adventure",
+   "runtime": 8,
+   "rating": 7.6,
+   "director": "Andreas Goralczyk",
+   "cast": "",
+   "country": "Netherlands",
+   "category": "Animation",
+   "plot": "A shepherd girl and her loyal dog face the ancient spirits of the mountains to keep the seasons turning.",
+   "poster": "Spring2019PillarPosterBlender.jpg",
+   "video": "Spring - Blender Open Movie.webm",
+   "still": 69
+  },
+  {
+   "key": "charade",
+   "title": "Charade",
+   "year": 1963,
+   "released": "1963-12-01",
+   "genre": "Comedy, Mystery, Romance",
+   "runtime": 113,
+   "rating": 7.7,
+   "director": "Stanley Donen",
+   "cast": "Cary Grant, Audrey Hepburn, Walter Matthau",
+   "country": "United States",
+   "category": "Comedy & Romance",
+   "plot": "After her husband is murdered, Regina Lampert is chased across Paris by three men who want the fortune he stole, and by a charming stranger whose name keeps changing.",
+   "poster": "Charade (1963 poster).jpg",
+   "video": "Charade (Stanley Donen, 1963).webm",
+   "still": 4200
+  },
+  {
+   "key": "sintel",
+   "title": "Sintel",
+   "year": 2010,
+   "released": "2010-09-30",
+   "genre": "Animation, Fantasy",
+   "runtime": 14,
+   "rating": 7.3,
+   "director": "Colin Levy",
+   "cast": "Halina Reijn, Thom Hoffman",
+   "country": "Netherlands",
+   "category": "Animation",
+   "plot": "A lonely young woman nurses a baby dragon back to health, and when it is snatched away she sets out across a harsh world to find it.",
+   "poster": "Sintel poster.jpg",
+   "video": "Sintel movie 4K.webm",
+   "still": 266
+  },
+  {
+   "key": "night-of-the-living-dead",
+   "title": "Night of the Living Dead",
+   "year": 1968,
+   "released": "1968-10-04",
+   "genre": "Horror, Science Fiction",
+   "runtime": 96,
+   "rating": 7.6,
+   "director": "George A. Romero",
+   "cast": "Judith O'Dea, Duane Jones, Marilyn Eastman",
+   "country": "United States",
+   "category": "Horror & Sci-Fi",
+   "plot": "Strangers barricade themselves inside a Pennsylvania farmhouse as the recently dead rise and lay siege through the night.",
+   "poster": "Night Of The Living Dead (1968) - Poster.jpg",
+   "video": "Night of the Living Dead (1968).webm",
+   "still": 2589
+  },
+  {
+   "key": "sprite-fright",
+   "title": "Sprite Fright",
+   "year": 2021,
+   "released": "2021-10-29",
+   "genre": "Animation, Horror, Comedy",
+   "runtime": 11,
+   "rating": 7.7,
+   "director": "Matthew Luhn",
+   "cast": "Valerie LaPointe, Gabriel Bisset-Smith, Nicole Davis",
+   "country": "Netherlands",
+   "category": "Animation",
+   "plot": "Rowdy teenagers on a trip into a British forest meet its tiny mushroom sprites, who turn out to be far less peaceful than they look.",
+   "poster": "Sprite Fright-movie poster.jpg",
+   "video": "Sprite Fright - Blender Open Movie-full movie.webm",
+   "still": 189
+  },
+  {
+   "key": "his-girl-friday",
+   "title": "His Girl Friday",
+   "year": 1940,
+   "released": "1940-01-18",
+   "genre": "Comedy, Romance, Crime",
+   "runtime": 92,
+   "rating": 7.4,
+   "director": "Howard Hawks",
+   "cast": "Cary Grant, Rosalind Russell, Ralph Bellamy",
+   "country": "United States",
+   "category": "Comedy & Romance",
+   "plot": "A fast-talking newspaper editor will stop at nothing to keep his star reporter, who happens to be his ex-wife, from remarrying and leaving the paper.",
+   "poster": "His Girl Friday (1940 poster) crop.jpg",
+   "video": "His Girl Friday (1940).webm",
+   "still": 828
+  },
+  {
+   "key": "big-buck-bunny",
+   "title": "Big Buck Bunny",
+   "year": 2008,
+   "released": "2008-04-10",
+   "genre": "Animation, Comedy, Family",
+   "runtime": 8,
+   "rating": 6.5,
+   "director": "Sacha Goedegebure",
+   "cast": "",
+   "country": "Netherlands",
+   "category": "Animation",
+   "plot": "A big-hearted rabbit's peaceful day in the meadow is spoiled by three bullying rodents, so he plans a sweet revenge.",
+   "poster": "Big buck bunny poster big.jpg",
+   "video": "Big Buck Bunny 4K.webm",
+   "still": 285
+  },
+  {
+   "key": "the-general",
+   "title": "The General",
+   "year": 1926,
+   "released": "1926-12-25",
+   "genre": "Comedy, War, Romance",
+   "runtime": 79,
+   "rating": 7.9,
+   "director": "Clyde Bruckman, Buster Keaton",
+   "cast": "Buster Keaton, Marion Mack, Glen Cavender",
+   "country": "United States",
+   "category": "Silent Classics",
+   "plot": "When Union spies steal his beloved locomotive, a Confederate engineer gives chase alone, by rail, deep behind enemy lines.",
+   "poster": "The General (1926) - Movie Poster 2.png",
+   "video": "The General (1926).webm",
+   "still": 3414
+  },
+  {
+   "key": "tears-of-steel",
+   "title": "Tears of Steel",
+   "year": 2012,
+   "released": "2012-09-25",
+   "genre": "Science Fiction, Animation",
+   "runtime": 12,
+   "rating": 5.7,
+   "director": "Ian Hubert",
+   "cast": "Derek de Lint, Sergio Hasselbaink, Vanja Rukavina",
+   "country": "Netherlands",
+   "category": "Horror & Sci-Fi",
+   "plot": "In a ruined future Amsterdam, a band of scientists and soldiers try to stop an army of robots by replaying the memory that started it all.",
+   "poster": "Tos-poster.png",
+   "video": "Tears of Steel 1080p.webm",
+   "still": 220
+  },
+  {
+   "key": "plan-9",
+   "title": "Plan 9 from Outer Space",
+   "year": 1957,
+   "released": "1957-03-15",
+   "genre": "Science Fiction, Horror",
+   "runtime": 78,
+   "rating": 4.2,
+   "director": "Edward D. Wood Jr.",
+   "cast": "Gregory Walcott, Mona McKinnon, Duke Moore",
+   "country": "United States",
+   "category": "Horror & Sci-Fi",
+   "plot": "Aliens raise the dead from a California cemetery to stop humanity from building a doomsday weapon.",
+   "poster": "Plan 9 Alternative poster.jpg",
+   "video": "Plan 9 from Outer Space (1959 film).webm",
+   "still": 1409
+  },
+  {
+   "key": "cosmos-laundromat",
+   "title": "Cosmos Laundromat",
+   "year": 2015,
+   "released": "2015-08-10",
+   "genre": "Animation, Fantasy",
+   "runtime": 12,
+   "rating": 6.3,
+   "director": "Mathieu Auvray",
+   "cast": "Pierre Bokma, Reinout Scholten van Aschat",
+   "country": "Netherlands",
+   "category": "Animation",
+   "plot": "On a desolate island, a suicidal sheep named Franck meets a mysterious salesman who offers him the gift of a lifetime.",
+   "poster": "CosmosLaundromatPoster.jpg",
+   "video": null,
+   "still": null
+  },
+  {
+   "key": "carnival-of-souls",
+   "title": "Carnival of Souls",
+   "year": 1962,
+   "released": "1962-11-02",
+   "genre": "Horror, Mystery, Fantasy",
+   "runtime": 78,
+   "rating": 7.0,
+   "director": "Herk Harvey",
+   "cast": "Candace Hilligoss, Herk Harvey, Sidney Berger",
+   "country": "United States",
+   "category": "Horror & Sci-Fi",
+   "plot": "After surviving a car crash, a church organist moves to Utah, where she is drawn to an abandoned lakeside pavilion and haunted by a pale stranger.",
+   "poster": "Carnival of Souls (1962 pressbook cover).jpg",
+   "video": "Carnival of Souls (1962) by Herk Harvey.webm",
+   "still": 2798
+  },
+  {
+   "key": "elephants-dream",
+   "title": "Elephants Dream",
+   "year": 2006,
+   "released": "2006-03-24",
+   "genre": "Animation, Science Fiction",
+   "runtime": 11,
+   "rating": 5.8,
+   "director": "Bassam Kurdali",
+   "cast": "Tygo Gernandt, Cas Jansen",
+   "country": "Netherlands",
+   "category": "Animation",
+   "plot": "Two men explore a vast, ever-changing machine: old Proog insists he knows its rules, while young Emo starts to doubt it is real.",
+   "poster": "ElephantsDreamPoster.jpg",
+   "video": "Elephants Dream (2006) 1080p24.webm",
+   "still": 493
+  },
+  {
+   "key": "a-star-is-born",
+   "title": "A Star Is Born",
+   "year": 1937,
+   "released": "1937-04-20",
+   "genre": "Drama, Romance",
+   "runtime": 111,
+   "rating": 7.2,
+   "director": "William A. Wellman",
+   "cast": "Janet Gaynor, Fredric March, Adolphe Menjou",
+   "country": "United States",
+   "category": "Drama",
+   "plot": "A farm girl comes to Hollywood dreaming of stardom, and rises to fame as the career of the fading star who discovered and married her falls apart.",
+   "poster": "A Star Is Born (1937 film poster).jpg",
+   "video": "A Star Is Born (1937).webm",
+   "still": 3997
+  },
+  {
+   "key": "detour",
+   "title": "Detour",
+   "year": 1945,
+   "released": "1945-11-30",
+   "genre": "Drama, Thriller",
+   "runtime": 68,
+   "rating": 7.2,
+   "director": "Edgar G. Ulmer",
+   "cast": "Tom Neal, Ann Savage, Claudia Drake",
+   "country": "United States",
+   "category": "Film Noir",
+   "plot": "Hitchhiking across America to reach his girlfriend, a nightclub pianist is pulled into a spiral of bad luck, blackmail and murder.",
+   "poster": "Detour (poster).jpg",
+   "video": "Detour (1945) by Edgar G. Ulmer.webm",
+   "still": 2447
+  },
+  {
+   "key": "gullivers-travels",
+   "title": "Gulliver's Travels",
+   "year": 1939,
+   "released": "1939-11-10",
+   "genre": "Animation, Family, Action",
+   "runtime": 76,
+   "rating": 6.2,
+   "director": "Dave Fleischer, Willard Bowsky",
+   "cast": "Lanny Ross, Sam Parker, Pinto Colvig",
+   "country": "United States",
+   "category": "Animation",
+   "plot": "Shipwrecked sailor Lemuel Gulliver washes ashore in Lilliput, where the tiny inhabitants are on the brink of war over a wedding song.",
+   "poster": "Gullivers travel poster 3.jpg",
+   "video": "Gulliver's Travels (1939).webm",
+   "still": 2061
+  },
+  {
+   "key": "phantom-of-the-opera",
+   "title": "The Phantom of the Opera",
+   "year": 1925,
+   "released": "1925-06-29",
+   "genre": "Horror, Music",
+   "runtime": 107,
+   "rating": 7.1,
+   "director": "Rupert Julian",
+   "cast": "Lon Chaney, Norman Kerry, Mary Philbin",
+   "country": "United States",
+   "category": "Silent Classics",
+   "plot": "A disfigured genius haunting the cellars of the Paris Opera falls for a young singer and will do anything to make her a star.",
+   "poster": "Phantom of the opera 1925 poster.jpg",
+   "video": "The Phantom of the Opera (1925).webm",
+   "still": 3285
+  },
+  {
+   "key": "d-o-a",
+   "title": "D.O.A.",
+   "year": 1949,
+   "released": "1949-12-23",
+   "genre": "Mystery, Thriller, Crime",
+   "runtime": 83,
+   "rating": 6.9,
+   "director": "Rudolph Maté",
+   "cast": "Edmond O'Brien, Pamela Britton, Luther Adler",
+   "country": "United States",
+   "category": "Film Noir",
+   "plot": "Poisoned and with only days to live, an accountant races to San Francisco and Los Angeles to find out who killed him, and why.",
+   "poster": "D.O.A. (1950 poster).jpg",
+   "video": null,
+   "still": null
+  },
+  {
+   "key": "charge",
+   "title": "Charge",
+   "year": 2022,
+   "released": "2022-12-15",
+   "genre": "Animation",
+   "runtime": 4,
+   "rating": 7.1,
+   "director": "Hjalti Hjálmarsson",
+   "cast": "",
+   "country": "Netherlands",
+   "category": "Animation",
+   "plot": "In a future where energy is rationed, a desperate old man breaks into a power plant and comes face to face with its robot guard.",
+   "poster": "Charge-movie poster.jpg",
+   "video": "Charge - Blender Open Movie-full movie.webm",
+   "still": 118
+  },
+  {
+   "key": "house-on-haunted-hill",
+   "title": "House on Haunted Hill",
+   "year": 1959,
+   "released": "1959-01-01",
+   "genre": "Horror, Mystery",
+   "runtime": 75,
+   "rating": 6.7,
+   "director": "William Castle",
+   "cast": "Vincent Price, Carol Ohmart, Richard Long",
+   "country": "United States",
+   "category": "Horror & Sci-Fi",
+   "plot": "An eccentric millionaire offers five strangers $10,000 each to survive a night in a haunted mansion with him and his scheming wife.",
+   "poster": "House on Haunted Hill.jpg",
+   "video": null,
+   "still": null
+  },
+  {
+   "key": "sherlock-jr",
+   "title": "Sherlock Jr.",
+   "year": 1924,
+   "released": "1924-04-17",
+   "genre": "Action, Comedy, Mystery",
+   "runtime": 45,
+   "rating": 8.0,
+   "director": "Buster Keaton",
+   "cast": "Buster Keaton, Kathryn McGuire, Joe Keaton",
+   "country": "United States",
+   "category": "Silent Classics",
+   "plot": "A projectionist who dreams of being a great detective falls asleep at work and walks straight into the film he is showing.",
+   "poster": "Sherlock jr poster.jpg",
+   "video": "Sherlock Jr. (1924).webm",
+   "still": 1191
+  },
+  {
+   "key": "scarlet-street",
+   "title": "Scarlet Street",
+   "year": 1945,
+   "released": "1945-12-25",
+   "genre": "Drama, Crime",
+   "runtime": 103,
+   "rating": 7.6,
+   "director": "Fritz Lang",
+   "cast": "Edward G. Robinson, Joan Bennett, Dan Duryea",
+   "country": "United States",
+   "category": "Film Noir",
+   "plot": "A meek cashier and Sunday painter falls for a young woman whose boyfriend schemes to exploit him, with deadly results.",
+   "poster": "Edward G. Robinson and Joan Bennett in 'Scarlet Street', 1946.jpg",
+   "video": "Scarlet Street (1945) by Fritz Lang.webm",
+   "still": 1843
+  },
+  {
+   "key": "my-man-godfrey",
+   "title": "My Man Godfrey",
+   "year": 1936,
+   "released": "1936-09-02",
+   "genre": "Comedy",
+   "runtime": 95,
+   "rating": 7.6,
+   "director": "Gregory La Cava",
+   "cast": "William Powell, Carole Lombard, Alice Brady",
+   "country": "United States",
+   "category": "Comedy & Romance",
+   "plot": "A scatterbrained heiress hires a 'forgotten man' from the city dump as her family's butler, and he proves wiser than all of them.",
+   "poster": "My Man Godfrey (1936 poster - Style C).jpg",
+   "video": null,
+   "still": null
+  },
+  {
+   "key": "the-hitch-hiker",
+   "title": "The Hitch-Hiker",
+   "year": 1953,
+   "released": "1953-03-30",
+   "genre": "Thriller, Crime, Drama",
+   "runtime": 71,
+   "rating": 6.8,
+   "director": "Ida Lupino",
+   "cast": "Edmond O'Brien, Frank Lovejoy, William Talman",
+   "country": "United States",
+   "category": "Film Noir",
+   "plot": "Two friends on a fishing trip give a ride to a stranger who turns out to be a killer, and are forced to drive him across Mexico.",
+   "poster": "The Hitch-Hiker (1953 poster).jpeg",
+   "video": "The Hitch-Hiker.webm",
+   "still": 639
+  },
+  {
+   "key": "wings",
+   "title": "Wings",
+   "year": 1927,
+   "released": "1927-08-12",
+   "genre": "Drama, Action, War",
+   "runtime": 144,
+   "rating": 7.2,
+   "director": "William A. Wellman",
+   "cast": "Clara Bow, Charles 'Buddy' Rogers, Richard Arlen",
+   "country": "United States",
+   "category": "Silent Classics",
+   "plot": "Two young men from the same small town, rivals in love, become fighter pilots and best friends over France in the First World War.",
+   "poster": "Wings (1927) poster.jpg",
+   "video": "Wings (1927).webm",
+   "still": 3743
+  },
+  {
+   "key": "caligari",
+   "title": "The Cabinet of Dr. Caligari",
+   "year": 1920,
+   "released": "1920-02-27",
+   "genre": "Drama, Horror, Thriller",
+   "runtime": 77,
+   "rating": 7.9,
+   "director": "Robert Wiene",
+   "cast": "Werner Krauss, Conrad Veidt, Friedrich Fehér",
+   "country": "Germany",
+   "category": "Silent Classics",
+   "plot": "A sinister showman and the sleepwalker he exhibits at a fairground are linked to a string of murders in a twisted, painted town.",
+   "poster": "Das Cabinet des Dr. Caligari.JPG",
+   "video": "The Cabinet of Dr. Caligari (1920).webm",
+   "still": 679
+  },
+  {
+   "key": "animal-crackers",
+   "title": "Animal Crackers",
+   "year": 1930,
+   "released": "1930-08-08",
+   "genre": "Comedy, Music",
+   "runtime": 98,
+   "rating": 6.9,
+   "director": "Victor Heerman",
+   "cast": "Groucho Marx, Harpo Marx, Chico Marx",
+   "country": "United States",
+   "category": "Comedy & Romance",
+   "plot": "Chaos descends on a society party when the famous explorer Captain Spaulding arrives, and a valuable painting goes missing.",
+   "poster": "Animal Crackers Movie Poster (Better Quality).jpg",
+   "video": "Marx Brothers Animal Crackers (1930).webm",
+   "still": 4181
+  },
+  {
+   "key": "the-man-with-the-golden-arm",
+   "title": "The Man with the Golden Arm",
+   "year": 1955,
+   "released": "1955-12-26",
+   "genre": "Drama, Crime",
+   "runtime": 119,
+   "rating": 7.1,
+   "director": "Otto Preminger",
+   "cast": "Frank Sinatra, Eleanor Parker, Kim Novak",
+   "country": "United States",
+   "category": "Drama",
+   "plot": "A card dealer and drummer comes home from prison clean and determined to start again, but his old life won't let him go.",
+   "poster": "The Man with the Golden Arm poster.jpg",
+   "video": null,
+   "still": null
+  },
+  {
+   "key": "sunrise",
+   "title": "Sunrise: A Song of Two Humans",
+   "year": 1927,
+   "released": "1927-11-04",
+   "genre": "Drama, Romance",
+   "runtime": 94,
+   "rating": 7.8,
+   "director": "F. W. Murnau",
+   "cast": "George O'Brien, Janet Gaynor, Margaret Livingston",
+   "country": "United States",
+   "category": "Silent Classics",
+   "plot": "Seduced by a woman from the city into plotting to drown his wife, a farmer rediscovers his love for her over a day in the city.",
+   "poster": "Sunrise - A Song of Two Humans.jpg",
+   "video": "Sunrise - A Song of Two Humans (1927).webm",
+   "still": 1697
+  },
+  {
+   "key": "meet-john-doe",
+   "title": "Meet John Doe",
+   "year": 1941,
+   "released": "1941-03-14",
+   "genre": "Drama, Comedy, Romance",
+   "runtime": 123,
+   "rating": 7.3,
+   "director": "Frank Capra",
+   "cast": "Gary Cooper, Barbara Stanwyck, Edward Arnold",
+   "country": "United States",
+   "category": "Drama",
+   "plot": "A columnist invents a man who vows to protest society's ills, hires a drifter to play him, and watches a national movement take on a life of its own.",
+   "poster": "Poster - Meet John Doe 01.jpg",
+   "video": "Meet John Doe (1941) by Frank Capra.webm",
+   "still": 1108
+  },
+  {
+   "key": "the-stranger",
+   "title": "The Stranger",
+   "year": 1946,
+   "released": "1946-06-02",
+   "genre": "Thriller, Crime",
+   "runtime": 95,
+   "rating": 7.2,
+   "director": "Orson Welles",
+   "cast": "Edward G. Robinson, Loretta Young, Orson Welles",
+   "country": "United States",
+   "category": "Film Noir",
+   "plot": "A war crimes investigator tracks a Nazi fugitive to a quiet Connecticut town, where he is hiding as a respected teacher about to marry the judge's daughter.",
+   "poster": "The Stranger (1946 film poster).jpg",
+   "video": null,
+   "still": null
+  },
+  {
+   "key": "steamboat-bill-jr",
+   "title": "Steamboat Bill, Jr.",
+   "year": 1928,
+   "released": "1928-05-09",
+   "genre": "Comedy, Romance",
+   "runtime": 70,
+   "rating": 7.6,
+   "director": "Charles Reisner, Buster Keaton",
+   "cast": "Buster Keaton, Tom McGuire, Ernest Torrence",
+   "country": "United States",
+   "category": "Silent Classics",
+   "plot": "A gangly college boy joins his gruff father's riverboat business just as a rival owner, and a cyclone, threaten everything.",
+   "poster": "Steamboat bill poster.jpg",
+   "video": "Steamboat Bill Jr. (1928) by Charles Riesner.webm",
+   "still": 1893
+  },
+  {
+   "key": "all-quiet",
+   "title": "All Quiet on the Western Front",
+   "year": 1930,
+   "released": "1930-04-29",
+   "genre": "Drama, War",
+   "runtime": 133,
+   "rating": 7.8,
+   "director": "Lewis Milestone",
+   "cast": "Louis Wolheim, Lew Ayres, John Wray",
+   "country": "United States",
+   "category": "Drama",
+   "plot": "German schoolboys, stirred by their teacher to enlist, discover the reality of the trenches of the First World War.",
+   "poster": "All Quiet on the Western Front (1930 film) poster.jpg",
+   "video": "All Quiet on the Western Front (1930, sound version).webm",
+   "still": 1200
+  },
+  {
+   "key": "the-brain-that-wouldnt-die",
+   "title": "The Brain That Wouldn't Die",
+   "year": 1962,
+   "released": "1962-02-25",
+   "genre": "Horror, Science Fiction",
+   "runtime": 82,
+   "rating": 4.7,
+   "director": "Joseph Green",
+   "cast": "Jason Evers, Virginia Leith, Leslie Daniels",
+   "country": "United States",
+   "category": "Horror & Sci-Fi",
+   "plot": "After a car crash, a surgeon keeps his fiancée's severed head alive in his laboratory while he searches for a new body for her.",
+   "poster": "Brainthatwouldntdie film poster.jpg",
+   "video": "The Brain That Wouldn't Die (1962) by Joseph Green.webm",
+   "still": 743
+  }
+ ],
+ "series": [
+  {
+   "key": "king-of-the-rocket-men",
+   "title": "King of the Rocket Men",
+   "year": 1949,
+   "released": "1949-06-08",
+   "genre": "Action, Science Fiction",
+   "rating": 5.4,
+   "director": "Fred C. Brannon",
+   "cast": "Tristram Coffin, Mae Clarke, Don Haggerty",
+   "country": "United States",
+   "category": "Classic Serials",
+   "plot": "Jeff King straps on a rocket-powered flying suit to stop the mysterious Dr. Vulcan, who is stealing the inventions of a secret science foundation.",
+   "poster": "King of the Rocket Men FilmPoster.jpeg",
+   "episodes": [
+    {
+     "title": "Dr. Vulcan – Traitor",
+     "seconds": 1200
+    },
+    {
+     "title": "Plunging Death",
+     "seconds": 800
+    },
+    {
+     "title": "Dangerous Evidence",
+     "seconds": 800
+    },
+    {
+     "title": "High Peril",
+     "seconds": 800
+    },
+    {
+     "title": "Fatal Dive",
+     "seconds": 800
+    },
+    {
+     "title": "Mystery of the Rocket Man",
+     "seconds": 800
+    },
+    {
+     "title": "Molten Menace",
+     "seconds": 800
+    },
+    {
+     "title": "Suicide Flight",
+     "seconds": 800
+    },
+    {
+     "title": "Ten Seconds to Live",
+     "seconds": 800
+    },
+    {
+     "title": "The Deadly Fog",
+     "seconds": 800
+    },
+    {
+     "title": "Secret of Dr. Vulcan",
+     "seconds": 800
+    },
+    {
+     "title": "Wave of Disaster",
+     "seconds": 800
+    }
+   ]
+  },
+  {
+   "key": "zombies-of-the-stratosphere",
+   "title": "Zombies of the Stratosphere",
+   "year": 1952,
+   "released": "1952-10-25",
+   "genre": "Action, Science Fiction",
+   "rating": 5.0,
+   "director": "Fred C. Brannon",
+   "cast": "Judd Holdren, Aline Towne, Lane Bradford",
+   "country": "United States",
+   "category": "Classic Serials",
+   "plot": "Rocket-suited Larry Martin battles Martian invaders who plan to knock Earth out of its orbit with a hydrogen bomb.",
+   "poster": "Zombies of the Stratosphere poster.jpg",
+   "episodes": [
+    {
+     "title": "The Zombie Vanguard",
+     "seconds": 1200
+    },
+    {
+     "title": "Battle of the Rockets",
+     "seconds": 800
+    },
+    {
+     "title": "Undersea Agents",
+     "seconds": 800
+    },
+    {
+     "title": "Contraband Cargo",
+     "seconds": 800
+    },
+    {
+     "title": "The Iron Executioner",
+     "seconds": 800
+    },
+    {
+     "title": "Murder Mine",
+     "seconds": 800
+    },
+    {
+     "title": "Death on the Waterfront",
+     "seconds": 800
+    },
+    {
+     "title": "Hostage for Murder",
+     "seconds": 800
+    },
+    {
+     "title": "The Human Torpedo",
+     "seconds": 800
+    },
+    {
+     "title": "Flying Gas Chamber",
+     "seconds": 800
+    },
+    {
+     "title": "Man vs. Monster",
+     "seconds": 800
+    },
+    {
+     "title": "Tomb of the Traitors",
+     "seconds": 800
+    }
+   ]
+  },
+  {
+   "key": "radar-men-from-the-moon",
+   "title": "Radar Men from the Moon",
+   "year": 1952,
+   "released": "1952-01-09",
+   "genre": "Action, Science Fiction",
+   "rating": 4.6,
+   "director": "Fred C. Brannon",
+   "cast": "George D. Wallace, Aline Towne, Roy Barcroft",
+   "country": "United States",
+   "category": "Classic Serials",
+   "plot": "Commando Cody flies his rocket suit to the Moon to stop its ruler, Retik, from conquering Earth with an atomic ray.",
+   "poster": "Radarmen2.jpg",
+   "episodes": [
+    {
+     "title": "Moon Rocket",
+     "seconds": 1200
+    },
+    {
+     "title": "Molten Terror",
+     "seconds": 800
+    },
+    {
+     "title": "Bridge of Death",
+     "seconds": 800
+    },
+    {
+     "title": "Flight to Destruction",
+     "seconds": 800
+    },
+    {
+     "title": "Murder Car",
+     "seconds": 800
+    },
+    {
+     "title": "Hills of Death",
+     "seconds": 800
+    },
+    {
+     "title": "Camouflaged Destruction",
+     "seconds": 800
+    },
+    {
+     "title": "The Enemy Planet",
+     "seconds": 800
+    },
+    {
+     "title": "Battle in the Stratosphere",
+     "seconds": 800
+    },
+    {
+     "title": "Mass Execution",
+     "seconds": 800
+    },
+    {
+     "title": "Planned Pursuit",
+     "seconds": 800
+    },
+    {
+     "title": "Death of the Moon Man",
+     "seconds": 800
+    }
+   ]
+  },
+  {
+   "key": "undersea-kingdom",
+   "title": "Undersea Kingdom",
+   "year": 1936,
+   "released": "1936-05-30",
+   "genre": "Adventure, Science Fiction",
+   "rating": 4.4,
+   "director": "B. Reeves Eason, Joseph Kane",
+   "cast": "Ray Corrigan, Lois Wilde, Monte Blue",
+   "country": "United States",
+   "category": "Classic Serials",
+   "plot": "Naval officer Crash Corrigan dives in search of the lost city of Atlantis and finds two kingdoms at war beneath the sea.",
+   "poster": "Underseakingdomserial.jpg",
+   "episodes": [
+    {
+     "title": "Beneath the Ocean Floor",
+     "seconds": 1851
+    },
+    {
+     "title": "The Undersea City",
+     "seconds": 1153
+    },
+    {
+     "title": "Arena of Death",
+     "seconds": 1138
+    },
+    {
+     "title": "Revenge of the Volkites",
+     "seconds": 1087
+    },
+    {
+     "title": "Prisoners of Atlantis",
+     "seconds": 1053
+    },
+    {
+     "title": "The Juggernaut Strikes",
+     "seconds": 1000
+    },
+    {
+     "title": "The Submarine Trap",
+     "seconds": 1040
+    },
+    {
+     "title": "Into the Metal Tower",
+     "seconds": 1009
+    },
+    {
+     "title": "Death in the Air",
+     "seconds": 1008
+    },
+    {
+     "title": "Atlantis Destroyed",
+     "seconds": 1048
+    },
+    {
+     "title": "Flaming Death",
+     "seconds": 1163
+    },
+    {
+     "title": "Ascent to the Upperworld",
+     "seconds": 1014
+    }
+   ]
+  },
+  {
+   "key": "the-phantom-empire",
+   "title": "The Phantom Empire",
+   "year": 1935,
+   "released": "1935-02-22",
+   "genre": "Western, Science Fiction",
+   "rating": 5.8,
+   "director": "Otto Brower, B. Reeves Eason",
+   "cast": "Gene Autry, Frankie Darro, Betsy King Ross",
+   "country": "United States",
+   "category": "Classic Serials",
+   "plot": "Singing cowboy Gene Autry discovers Murania, a futuristic civilisation hidden deep beneath his ranch.",
+   "poster": "Phantom-Empire-Poster-1935.jpg",
+   "episodes": [
+    {
+     "title": "The Singing Cowboy",
+     "seconds": 1824
+    },
+    {
+     "title": "The Thunder Riders",
+     "seconds": 1170
+    },
+    {
+     "title": "The Lightning Chamber",
+     "seconds": 1170
+    },
+    {
+     "title": "Phantom Broadcast",
+     "seconds": 1170
+    },
+    {
+     "title": "Beneath the Earth",
+     "seconds": 1170
+    },
+    {
+     "title": "Disaster from the Skies",
+     "seconds": 1170
+    },
+    {
+     "title": "From Death to Life",
+     "seconds": 1170
+    },
+    {
+     "title": "Jaws of Jeopardy",
+     "seconds": 1170
+    },
+    {
+     "title": "Prisoners of the Ray",
+     "seconds": 1170
+    },
+    {
+     "title": "The Rebellion",
+     "seconds": 1170
+    },
+    {
+     "title": "A Queen in Chains",
+     "seconds": 1170
+    },
+    {
+     "title": "The End of Murania",
+     "seconds": 1170
+    }
+   ]
+  }
+ ]
+}

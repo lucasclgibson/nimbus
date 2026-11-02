@@ -1,0 +1,4 @@
+# Compile all of Nimbus's own code at install time. Self-updates install through the system installer
+# (no ADB "compile -m speed"), and uncompiled Compose code is visibly janky on a Fire TV stick.
+HSPLio/github/lucasclgibson/nimbus/**->**(**)**
+Lio/github/lucasclgibson/nimbus/**;

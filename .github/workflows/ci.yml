@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Unit tests
+        run: ./gradlew --no-daemon testReleaseUnitTest
+      - name: Build (debug, and an unsigned release to check minification)
+        run: ./gradlew --no-daemon assembleDebug assembleRelease
+      - uses: actions/upload-artifact@v7
+        with:
+          name: nimbus-debug
+          path: app/build/outputs/apk/debug/*.apk
+          retention-days: 14

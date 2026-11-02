@@ -1,0 +1,12 @@
+name: Feature idea
+description: Something Nimbus could do
+labels: [enhancement]
+body:
+  - type: textarea
+    attributes:
+      label: What would you like Nimbus to do?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Why? How would you use it?
