@@ -10,6 +10,8 @@ All notable changes to Nimbus are documented here. The format follows
 
 - The ☰ (menu) button opens the options for whatever is selected: on Home, in the film and series grids and in
   the TV guide, where channel groups are now among those options. Holding OK still works on remotes without ☰.
+- Live TV no longer keeps a "behind live" badge on screen while you watch a paused or rewound channel. ⏪ and
+  ⏩ still show where playback will jump to while you press them.
 
 ## [0.3.0] - 2026-11-02
 

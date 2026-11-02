@@ -358,9 +358,10 @@ private fun LiveOverlay(s: Session.Live, st: PlayerState) {
             LiveBanner(shown, nowNext, preview = target != null, favourite = "${Kind.LIVE}:${shown.key}" in favourites, canRewind = canRewind)
         }
         pausedAt?.let { at -> if (!showList) PausedPanel(at, buffered || app.live.hasCatchup(s.channel), Modifier.align(Alignment.Center)) }
+        // Only while ⏪/⏩ are being pressed (where playback will jump to) and for short notices: nothing stays on
+        // screen while you watch behind live.
         val status = rewindTo?.let { if (it >= now() - 4_000) "⏩  Live" else "⏪  ${clockLabel(now() - it)} behind live" }
             ?: notice
-            ?: if (pausedAt == null && behind >= 5_000) "${clockLabel(behind)} behind live  ·  ⏩ catch up" else null
         if (status != null && !showList) {
             Box(
                 Modifier.align(Alignment.TopEnd).padding(top = 30.dp, end = 48.dp)
