@@ -42,6 +42,7 @@ import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.LiveTv
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.ViewList
 import androidx.compose.material.icons.rounded.Replay
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -212,7 +213,7 @@ fun GuideScreen() {
                 EmptyState(
                     if (state.groupId == "fav") "No favourites yet" else "No channels",
                     if (app.store.all.value.isEmpty()) "Add a playlist in Settings to get started."
-                    else "Hold OK on any channel in the guide to add it to your favourites.",
+                    else "Press ☰ on any channel in the guide to add it to your favourites.",
                     action = { PillButton("Settings", { nav.go(Dest.Settings) }) },
                 )
             }
@@ -245,7 +246,8 @@ fun GuideScreen() {
                                     Key.MediaFastForward -> { if (down) state.jumpDays(1); true }
                                     Key.MediaRewind -> { if (down) state.jumpDays(-1); true }
                                     Key.MediaPlayPause, Key.MediaPlay -> { if (down) state.jumpNow(); true }
-                                    Key.Menu -> { if (down) menu = GuideMenu.Groups; true }
+                                    // ☰ opens the programme's options (channel groups are in there too).
+                                    Key.Menu -> { if (down && repeat == 0) menu = GuideMenu.Programme; true }
                                     Key.DirectionCenter, Key.Enter, Key.NumPadEnter -> {
                                         if (down && repeat == 0) pendingClick = true
                                         if (down && repeat == 1 && pendingClick) {
@@ -356,6 +358,11 @@ fun GuideScreen() {
                         ) { scope.launch { app.library.toggleFavourite(Kind.LIVE, ch.key) } }
                     )
                     add(MenuItem("Jump to now", "", Icons.Rounded.PlayArrow) { state.jumpNow() })
+                    add(
+                        MenuItem("Channel groups", state.groups.firstOrNull { it.id == state.groupId }?.title.orEmpty(), Icons.Rounded.ViewList) {
+                            menu = GuideMenu.Groups
+                        }
+                    )
                 }
                 OptionsMenu(
                     title = p?.title ?: ch.name,

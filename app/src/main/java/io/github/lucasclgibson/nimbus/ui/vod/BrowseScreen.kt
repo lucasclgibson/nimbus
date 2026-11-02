@@ -206,7 +206,7 @@ fun BrowseScreen(series: Boolean) {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         EmptyState(
                             if (state.selected == VodRepository.MY_LIST) "Your list is empty" else "Nothing here yet",
-                            if (state.selected == VodRepository.MY_LIST) "Hold OK on any title to add it to My list." else "Try another category.",
+                            if (state.selected == VodRepository.MY_LIST) "Press ☰ on any title to add it to My list." else "Try another category.",
                         )
                     }
                 } else {

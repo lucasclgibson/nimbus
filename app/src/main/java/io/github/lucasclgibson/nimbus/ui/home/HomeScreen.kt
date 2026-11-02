@@ -294,7 +294,7 @@ class HomeState(private val app: AppGraph, private val scope: CoroutineScope) {
         hero = Hero(
             cleanTitle(h.title), resumeMeta(h),
             "", h.backdrop.ifBlank { h.image }, if (h.kind == Kind.EPISODE) "TV show" else "Film",
-            hint = if (h.kind == Kind.EPISODE) "Hold OK to remove from Continue watching" else "Hold OK to remove from Continue watching or start again",
+            hint = if (h.kind == Kind.EPISODE) "Press ☰ to remove from Continue watching" else "Press ☰ to remove from Continue watching or start again",
         )
         delay(340)
         run {
@@ -328,7 +328,7 @@ class HomeState(private val app: AppGraph, private val scope: CoroutineScope) {
         }
     }
 
-    /** Continue watching card whose options (hold OK) are open. */
+    /** Continue watching card whose options (☰, or hold OK) are open. */
     var resumeOptions by mutableStateOf<HistoryEntity?>(null)
 }
 
@@ -432,7 +432,7 @@ fun HomeScreen() {
     state.resumeOptions?.let { h -> ResumeOptions(h, state, nav) }
 }
 
-/** Hold OK on a Continue watching card. */
+/** ☰ (or hold OK) on a Continue watching card. */
 @Composable
 private fun ResumeOptions(h: HistoryEntity, state: HomeState, nav: Navigator) {
     val app = LocalApp.current

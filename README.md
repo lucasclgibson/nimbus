@@ -70,12 +70,14 @@ control navigation on 1080p and 4K TVs. Updates are new releases: install them o
 
 | Where | Keys |
 | --- | --- |
-| TV guide | ◀ ▶ programmes, past and future · ▲ ▼ channels · ⏪ ⏩ a day back or forward · ⏯ back to now · OK watch (catch-up if it's past) · hold OK for options · ≡ channel groups |
-| Live TV | ▲ ▼ change channel · ◀ channel list · OK banner, OK again for options · ⏪ ⏩ rewind and forward · ⏯ pause |
-| Catch-up | ◀ ▶ rewind and forward across programmes (hold to go faster) · OK pause · ▼ back to live · ▲ options |
-| Films and episodes | ◀ ▶ seek (hold to go faster) · OK pause · ▲ audio, subtitles and picture |
-| Rows and grids | hold OK on a title for options: My list, or remove from Continue watching |
+| TV guide | ◀ ▶ programmes, past and future · ▲ ▼ channels · ⏪ ⏩ a day back or forward · ⏯ back to now · OK watch (catch-up if it's past) · ☰ options, favourites and channel groups |
+| Live TV | ▲ ▼ change channel · ◀ channel list · OK banner · OK again or ☰ for options · ⏪ ⏩ rewind and forward · ⏯ pause |
+| Catch-up | ◀ ▶ rewind and forward across programmes (hold to go faster) · OK pause · ▼ back to live · ▲ or ☰ options |
+| Films and episodes | ◀ ▶ seek (hold to go faster) · OK pause · ▲ or ☰ audio, subtitles and picture |
+| Rows and grids | ☰ on a title for its options: My list, or remove from Continue watching |
 | Search | the on-screen keyboard beside the results · ⏪ delete · ⏩ space · select the search box for the system keyboard |
+
+On remotes without a ☰ button, hold OK instead.
 
 ## Building from source
 

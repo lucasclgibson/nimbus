@@ -157,6 +157,14 @@ fun ChannelLogo(url: String, name: String, modifier: Modifier = Modifier, width:
  * called on a node which was placed already"). Remote navigation always keeps the focused item in view,
  * so pinning buys nothing here. Remove this when moving to Compose 1.12 or later.
  */
+/** The remote's ☰ button runs a card's options action (holding OK does the same, for remotes without ☰). */
+private fun Modifier.menuKey(action: (() -> Unit)?): Modifier =
+    if (action == null) this else onPreviewKeyEvent { e ->
+        if (e.key != Key.Menu) return@onPreviewKeyEvent false
+        if (e.type == KeyEventType.KeyDown && e.nativeKeyEvent.repeatCount == 0) action()
+        true
+    }
+
 @Composable
 private fun NoPinning(content: @Composable () -> Unit) =
     CompositionLocalProvider(androidx.compose.ui.layout.LocalPinnableContainer provides null, content = content)
@@ -178,7 +186,7 @@ fun FocusSurface(
     Surface(
         onClick = onClick,
         onLongClick = onLongClick,
-        modifier = modifier,
+        modifier = modifier.menuKey(onLongClick),
         shape = ClickableSurfaceDefaults.shape(shape = shape),
         colors = ClickableSurfaceDefaults.colors(
             containerColor = color,
@@ -216,7 +224,8 @@ fun TvTile(
         if (focused) focusedScale else 1f, androidx.compose.animation.core.tween(130), label = "tile",
     )
     val interaction = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
-    // Remote "hold OK": Compose's clickable doesn't turn a held DPAD_CENTER into a long click, so do it here.
+    // Holding OK also opens the options (for remotes without ☰): Compose's clickable doesn't turn a held
+    // DPAD_CENTER into a long click, so do it here.
     var pressed by remember { mutableStateOf(false) }
     var longFired by remember { mutableStateOf(false) }
     Box(
@@ -229,6 +238,7 @@ fun TvTile(
             }
             .background(background)
             .onFocusChanged { focused = it.isFocused }
+            .menuKey(onLongClick)
             .onPreviewKeyEvent { e ->
                 val select = e.key == Key.DirectionCenter || e.key == Key.Enter || e.key == Key.NumPadEnter
                 if (!select || onLongClick == null) return@onPreviewKeyEvent false

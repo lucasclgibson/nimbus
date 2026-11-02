@@ -6,6 +6,11 @@ All notable changes to Nimbus are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- The ☰ (menu) button opens the options for whatever is selected: on Home, in the film and series grids and in
+  the TV guide, where channel groups are now among those options. Holding OK still works on remotes without ☰.
+
 ## [0.3.0] - 2026-11-02
 
 First public release.
