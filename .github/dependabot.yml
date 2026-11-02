@@ -1,13 +1,22 @@
 version: 2
 updates:
+  # Library updates once a month, minor and patch versions together in one pull request. Major versions
+  # usually need code or SDK changes, so they're done by hand.
   - package-ecosystem: gradle
     directory: /
     schedule:
       interval: monthly
     groups:
-      androidx:
-        patterns: ["androidx.*"]
+      dependencies:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    ignore:
+      - dependency-name: "*"
+        update-types: [version-update:semver-major]
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
