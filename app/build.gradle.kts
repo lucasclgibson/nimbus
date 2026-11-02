@@ -133,7 +133,7 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.2.0")
     implementation("io.coil-kt.coil3:coil-svg:3.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
-    implementation("com.google.zxing:core:3.5.3")
+    implementation("com.google.zxing:core:3.5.4")
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 
