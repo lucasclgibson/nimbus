@@ -6,6 +6,8 @@ All notable changes to Nimbus are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-11-12
+
 ### Fixed
 
 - TV guide: channels whose guide id differs from the guide feed's only in capitals (`ITV1.uk` / `itv1.uk`) now
