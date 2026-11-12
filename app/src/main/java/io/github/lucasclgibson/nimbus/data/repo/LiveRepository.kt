@@ -13,6 +13,7 @@ import io.github.lucasclgibson.nimbus.data.db.PlaylistType
 import io.github.lucasclgibson.nimbus.data.db.ProgrammeEntity
 import io.github.lucasclgibson.nimbus.data.db.ProgrammeLite
 import io.github.lucasclgibson.nimbus.data.source.Catchup
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 
@@ -118,15 +119,23 @@ class LiveRepository(
 
     /**
      * Xtream panels often leave channels out of xmltv.php but still answer per-channel EPG requests.
-     * Called by the guide for visible channels with no data; tries each channel once per app session.
+     * Called by the guide for visible channels with no data; asks once per channel for each guide import
+     * (an import replaces what was stored here), and again if the request itself failed.
      * @return the channel's epg id if new data was stored
      */
     suspend fun fetchChannelEpg(c: ChannelEntity): String? {
         val p = store[c.playlistId] ?: return null
         if (p.type != PlaylistType.XTREAM || c.streamId.isEmpty()) return null
-        synchronized(attempted) { if (!attempted.add(c.key)) return null }
+        val tag = "${p.epgGeneration}:${c.key}"
+        synchronized(attempted) { if (!attempted.add(tag)) return null }
         return permits.withPermit {
-            val listings = runCatching { store.xtream(p).channelEpg(c.streamId) }.getOrNull().orEmpty()
+            val listings = try {
+                store.xtream(p).channelEpg(c.streamId)
+            } catch (e: Exception) {
+                synchronized(attempted) { attempted.remove(tag) }
+                if (e is CancellationException) throw e
+                return@withPermit null
+            }
             if (listings.isEmpty()) return@withPermit null
             val epgId = c.epgId.ifEmpty { "xc:${c.streamId}" }
             if (c.epgId.isEmpty()) db.channels().setEpgId(c.key, epgId)
@@ -148,16 +157,23 @@ class LiveRepository(
     /**
      * Many panels' xmltv.php only starts "today", although catch-up channels keep days of archive.
      * The per-channel EPG call does include the past, so back-fill it when the guide scrolls before
-     * the earliest programme we have. Once per channel guide id per session.
+     * the earliest programme we have. Once per channel guide id for each guide import, and again if the
+     * request itself failed.
      * @return the channel's epg id if anything was added
      */
     suspend fun fetchArchiveEpg(c: ChannelEntity, before: Long): String? {
         val p = store[c.playlistId] ?: return null
         if (p.type != PlaylistType.XTREAM || c.streamId.isEmpty() || c.catchupDays <= 0) return null
-        val tag = "${p.id}:${c.epgId.ifEmpty { c.key }}"
+        val tag = "${p.id}:${p.epgGeneration}:${c.epgId.ifEmpty { c.key }}"
         synchronized(archiveAttempted) { if (!archiveAttempted.add(tag)) return null }
         return permits.withPermit {
-            val listings = runCatching { store.xtream(p).channelEpg(c.streamId) }.getOrNull().orEmpty()
+            val listings = try {
+                store.xtream(p).channelEpg(c.streamId)
+            } catch (e: Exception) {
+                synchronized(archiveAttempted) { archiveAttempted.remove(tag) }
+                if (e is CancellationException) throw e
+                return@withPermit null
+            }
             val cutoff = now() - (c.catchupDays + 1) * DAY
             val past = listings.filter { it.end <= before && it.start >= cutoff }
             if (past.isEmpty()) return@withPermit null

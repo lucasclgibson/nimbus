@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import io.github.lucasclgibson.nimbus.player.FrameRateMatcher
 import io.github.lucasclgibson.nimbus.ui.AppRoot
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import io.github.lucasclgibson.nimbus.ui.theme.NimbusTheme
@@ -24,7 +25,16 @@ class MainActivity : ComponentActivity() {
         }
         // Drop the splash drawable once Compose is up.
         window.decorView.post { window.setBackgroundDrawable(null) }
-        graph.sync.refreshIfStale()
+        // The app often stays alive for days on a TV: check for a stale playlist or guide every time it comes
+        // to the front and while it stays there, which also retries an update that failed.
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                while (true) {
+                    graph.sync.refreshIfStale()
+                    delay(STALE_CHECK_MS)
+                }
+            }
+        }
 
         val matcher = FrameRateMatcher(this, lifecycleScope)
         graph.playback.displaySwitcher = { fps -> matcher.switchFor(fps, graph.prefs.matchFrameRate.value) }
@@ -42,6 +52,10 @@ class MainActivity : ComponentActivity() {
         graph.playback.onAppForeground()
         graph.household.syncSoon()
         lifecycleScope.launch { runCatching { graph.updater.check() } }
+    }
+
+    private companion object {
+        const val STALE_CHECK_MS = 30 * 60_000L
     }
 
     override fun onDestroy() {

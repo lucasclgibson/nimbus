@@ -564,7 +564,10 @@ class SyncManager(
         private val onProgress: (Int) -> Unit,
     ) : XmltvSink {
         private val feedIds = HashSet<String>()
-        private val feedLower = HashMap<String, String>()
+        /** lower-cased feed id -> every spelling of it in the feed */
+        private val feedLower = HashMap<String, MutableList<String>>()
+        /** our epg id -> the feed id its programmes are coming from (the first spelling that has any) */
+        private val sourceOf = HashMap<String, String>()
         private val nameToFeed = HashMap<String, String>()
         /** feed id -> our stored epg ids */
         private val targets = HashMap<String, MutableList<String>>()
@@ -576,7 +579,7 @@ class SyncManager(
 
         override fun channel(id: String, names: List<String>, icon: String) {
             feedIds += id
-            feedLower.putIfAbsent(id.lowercase(Locale.ROOT), id)
+            feedLower.getOrPut(id.lowercase(Locale.ROOT)) { ArrayList(1) }.let { if (id !in it) it += id }
             names.forEach { n -> nameToFeed.putIfAbsent(normaliseChannelName(n), id) }
         }
 
@@ -595,13 +598,11 @@ class SyncManager(
             }
             for (c in channels) {
                 val id = c.epgId
-                val direct = when {
-                    id.isEmpty() -> null
-                    id in feedIds -> id
-                    else -> feedLower[id.lowercase(Locale.ROOT)]
-                }
-                if (direct != null) {
-                    target(direct, id)
+                // Feeds often list an id twice, differing only in capitals, with the programmes under one
+                // spelling only: listen to every spelling, and keep whichever delivers first.
+                val direct = if (id.isEmpty()) emptyList() else guideIdSpellings(id, feedLower)
+                if (direct.isNotEmpty()) {
+                    direct.forEach { target(it, id) }
                     continue
                 }
                 val byName = nameToFeed[normaliseChannelName(c.name)]
@@ -625,11 +626,14 @@ class SyncManager(
         override fun programme(prog: XmltvProgramme) {
             val ours = targets[prog.channel] ?: return
             for (epgId in ours) {
+                val source = sourceOf[epgId]
+                if (source != null && source != prog.channel) continue
                 val shift = (shifts[epgId] ?: 0) * 60_000L
                 val start = prog.start + shift
                 val end = prog.stop + shift
                 val past = (pastDays[epgId] ?: 1) * DAY
                 if (end < nowMs - past || start > maxEnd) continue
+                if (source == null) sourceOf[epgId] = prog.channel
                 buffer += ProgrammeEntity(
                     playlistId = p.id,
                     generation = gen,
@@ -696,4 +700,13 @@ class SyncManager(
         private val XC_URL = Regex("""^https?://[^/]+/(live/)?[^/]+/[^/]+/\d+(\.[a-z0-9]+)?$""", RegexOption.IGNORE_CASE)
         val SERIES_EP = Regex("""^(.*?)[\s._\-]*[Ss](\d{1,2})[\s._\-]*[Ee](\d{1,3})(.*)$""")
     }
+}
+
+/**
+ * The feed ids that can carry the guide for a channel whose guide id is [id]: the exact spelling first, then
+ * the ones that differ only in capitals. [feedByLower] maps each lower-cased feed id to its spellings.
+ */
+internal fun guideIdSpellings(id: String, feedByLower: Map<String, List<String>>): List<String> {
+    val all = feedByLower[id.lowercase(Locale.ROOT)] ?: return emptyList()
+    return if (id in all) listOf(id) + all.filter { it != id } else all
 }

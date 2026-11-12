@@ -6,6 +6,15 @@ All notable changes to Nimbus are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- TV guide: channels whose guide id differs from the guide feed's only in capitals (`ITV1.uk` / `itv1.uk`) now
+  get their programmes, also when the feed lists both spellings and only one has any.
+- The playlist and guide are checked for updates every time Nimbus comes to the front and every half hour
+  while it's open, not only when the app starts, and an update that failed is tried again.
+- Channels that get their guide one by one are asked again after a failed request and after each guide
+  update, instead of staying empty until Nimbus restarts.
+
 ## [0.3.1] - 2026-11-02
 
 ### Changed
